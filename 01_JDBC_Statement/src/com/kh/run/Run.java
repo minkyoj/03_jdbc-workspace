@@ -17,11 +17,6 @@ public class Run {
 		
 		// run : 프로그램 실행만 담당(사용자가 보게될 첫 화면 띄워주고 끝)
 		new MemberMenu().mainMenu();
-		
-		
-		
-		
-		
 
 	}
 
