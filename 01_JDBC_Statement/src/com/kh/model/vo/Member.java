@@ -68,6 +68,11 @@ public class Member {
 		this.hobby = hobby;
 	}
 
+	public Member(String userId) {
+		super();
+		this.userId = userId;
+	}
+
 	// getter setter
 	public int getUserNo() {
 		return userNo;

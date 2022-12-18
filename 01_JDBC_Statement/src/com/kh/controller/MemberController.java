@@ -113,6 +113,21 @@ public class MemberController {
 		}
 		
 	}
+
+	public void updateDelete(String userId) {
+		
+		Member m = new Member(userId);
+		
+		int result = new MemberDao().deleteMember(m);
+		
+		if (result > 0) {
+			new MemberMenu().displayUpdateSuccess("성공적으로 삭제되었습니다.");
+		} else {
+			new MemberMenu().displayUpdateFail("회원 삭제 실패했습니다.");
+		}
+		
+		
+	}
 	
 
 }

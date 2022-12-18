@@ -224,7 +224,7 @@ public class MemberDao {
 		ResultSet rset = null;
 
 		// 실행할 sql문
-		String sql = "SELECT * FROM MEMBER WHERE USERID = '"+ userId + "'";
+		String sql = "SELECT * FROM MEMBER WHERE USERID = '" + userId + "'";
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -269,12 +269,12 @@ public class MemberDao {
 	}
 
 	public ArrayList<Member> keywordNameSelectList(String userName) {
-		
-		ArrayList<Member> list = new ArrayList<>(); 
+
+		ArrayList<Member> list = new ArrayList<>();
 
 		Connection conn = null;
 		Statement stmt = null;
-		ResultSet rset = null; 
+		ResultSet rset = null;
 
 		String sql = "SELECT * FROM MEMBER WHERE USERNAME LIKE '%" + userName + "%'";
 
@@ -318,30 +318,25 @@ public class MemberDao {
 		}
 
 		return list;
-		
+
 	}
 
 	public int updateMember(Member m) {
-		
+
 		int result = 0;
 		Connection conn = null;
 		Statement stmt = null;
 
-		String sql = "UPDATE MEMBER SET USERNAME = '"  + m.getUserName() +
-									  "', GENDER = '"  + m.getGender() +
-									  "', AGE = "	   + m.getAge() +
-									  ", EMAIL = '"    + m.getEmail() +
-									  "', PHONE = '"   + m.getPhone() +
-									  "', ADDRESS = '" + m.getAddress() +
-									  "', HOBBY = '"   + m.getHobby() +
-									  "' WHERE USERID = '"+ m.getUserId() + "'";
+		String sql = "UPDATE MEMBER SET USERNAME = '" + m.getUserName() + "', GENDER = '" + m.getGender() + "', AGE = "
+				+ m.getAge() + ", EMAIL = '" + m.getEmail() + "', PHONE = '" + m.getPhone() + "', ADDRESS = '"
+				+ m.getAddress() + "', HOBBY = '" + m.getHobby() + "' WHERE USERID = '" + m.getUserId() + "'";
 
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
 			stmt = conn.createStatement();
 			result = stmt.executeUpdate(sql);
-			
+
 			if (result > 0) {
 				conn.commit();
 			} else {
@@ -362,7 +357,44 @@ public class MemberDao {
 		}
 
 		return result;
-		
+
+	}
+
+	public int deleteMember(Member m) {
+
+		int result = 0;
+		Connection conn = null;
+		Statement stmt = null;
+
+		String sql = "DELETE FROM MEMBER WHERE USERID = '" + m.getUserId() + "'";
+
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
+			stmt = conn.createStatement();
+			result = stmt.executeUpdate(sql);
+
+			if (result > 0) {
+				conn.commit();
+			} else {
+				conn.rollback();
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+
 	}
 
 }

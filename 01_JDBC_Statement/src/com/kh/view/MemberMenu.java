@@ -57,6 +57,7 @@ public class MemberMenu {
 				updateMember();
 				break;
 			case 6:
+				deleteMember();
 				break;
 			case 9:
 				searchMemberName();
@@ -121,7 +122,7 @@ public class MemberMenu {
 	}
 
 	/**
-	 * 이름검색 화면(서브화면) -- case 3 찾고자하는 회원의 아이디를 입력 받는 창
+	 * 아이디검색 화면(서브화면) -- case 3 찾고자하는 회원의 아이디를 입력 받는 창
 	 */
 	private void searchMemberId() {
 		System.out.print("아이디 : ");
@@ -139,36 +140,51 @@ public class MemberMenu {
 
 		mc.searchKeywordName(userName);
 	}
-	
+
+	/**
+	 * 수정값 입력 화면(서브화면) -- case 5 수정할 회원의 정보를 입력 받는 창
+	 */
 	private void updateMember() {
 		System.out.print("변경할 아이디 : ");
 		String userId = sc.nextLine();
-		
-		System.out.print("변경할 이름 : ");
+
+		System.out.print("이름 수정 : ");
 		String userName = sc.nextLine();
-		
-		System.out.print("변경할 성별 : ");
+
+		System.out.print("성별 수정 : ");
 		String gender = sc.nextLine();
-		
-		System.out.print("변경할 나이 : ");
+
+		System.out.print("나이 수정 : ");
 		String age = sc.nextLine();
-		
-		System.out.print("변경할 이메일 : ");
+
+		System.out.print("이메일 수정 : ");
 		String email = sc.nextLine();
-		
-		System.out.print("변경할 휴대폰번호 : ");
+
+		System.out.print("휴대폰번호 수정 : ");
 		String phone = sc.nextLine();
-		
-		System.out.print("변경할 주소 : ");
+
+		System.out.print("주소 수정 : ");
 		String address = sc.nextLine();
-		
-		System.out.print("변경할 취미 : ");
+
+		System.out.print("취미 수정 : ");
 		String hobby = sc.nextLine();
 
 		mc.updateMember(userId, userName, gender, age, email, phone, address, hobby);
 	}
+	
+	
+	/**
+	 * 삭제할 아이디 검색 화면(서브화면) -- case 6 삭제할 회원의 아이디를 입력 받는 창
+	 */
+	private void deleteMember() {
+		System.out.print("삭제할 아이디 : ");
+		String userId = sc.nextLine();
+		
+		mc.updateDelete(userId);
+	}
 
-	// ------------------------------------------ 응답 화면 ----------------------------------------------
+	// ------------------------------------------ 응답 화면
+	// ----------------------------------------------
 
 	/**
 	 * 서비스 요청 처리 후 성공했을 경우 사용자가 보게 될 응답화면 -- case 1
@@ -277,10 +293,20 @@ public class MemberMenu {
 		System.out.println(m);
 	}
 
+	/**
+	 * 수정 서비스 요청시 조회결과가 있을 경우 사용자가 보게 될 응답화면 -- case 5
+	 * 
+	 * @param string
+	 */
 	public void displayUpdateSuccess(String message) {
 		System.out.println(message);
 	}
 
+	/**
+	 * 수정 서비스 요청시 조회결과가 있을 경우 사용자가 보게 될 응답화면 -- case 5
+	 * 
+	 * @param string
+	 */
 	public void displayUpdateFail(String message) {
 		System.out.println(message);
 	}
