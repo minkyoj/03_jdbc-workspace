@@ -1,5 +1,8 @@
 package com.product.controller;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.product.model.dao.ProductDao;
@@ -39,8 +42,62 @@ public class ProductController {
 		
 		ArrayList<Product> list = new ProductDao().selectList();
 		
+		if(list.isEmpty()) {
+			new ProductMenu().DisplayFail("상품조회에 실패하였습니다.");
+		}else {
+			new ProductMenu().DisplayProductList(list);
+		}
 		
 		
+		
+	}
+
+	public void selectByPname(String keyword) {
+		
+		ArrayList<Product> list = new ProductDao().selectByPname(keyword);
+		
+		if(list.isEmpty()) {
+			new ProductMenu().DisplayFail(keyword+"의 검색결과가 존재하지않습니다.");
+		}else {
+			new ProductMenu().DisplayProductList(list);
+		}
+		
+	}
+
+	public void updateProduct(String pName, String price, String ssgAble) {
+		
+		int result = new ProductDao().updateProduct(pName, Integer.parseInt(price), ssgAble);
+		
+		if(result > 0) {
+			new ProductMenu().DisplaySuccess(pName+"의 상품 정보가 변경되었습니다.");
+		}else {
+			new ProductMenu().DisplayFail(pName+"의 상품 정보 변경에 실패하였습니다.");
+		}
+		
+	}
+
+	public void deleteProduct(String pName) {
+		
+		int result = new ProductDao().deleteProduct(pName);
+		
+		if(result > 0) {
+			new ProductMenu().DisplaySuccess(pName+"의 상품이 삭제되었습니다.");
+		}else {
+			new ProductMenu().DisplayFail(pName+"의 상품 삭제 실패하였습니다.");
+		}
+		
+		
+	}
+
+	public void selectSsgProduct() {
+		
+		ArrayList <Product> list = new ProductDao().selectSsgProduct();
+		
+		if(list.isEmpty()) {
+			new ProductMenu().DisplayFail("조회에 실패하였습니다.");
+		}else {
+			new ProductMenu().DisplayProductList(list);
+		}
 		
 	}
 

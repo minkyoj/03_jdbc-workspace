@@ -1,8 +1,10 @@
 package com.product.view;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.product.controller.ProductController;
+import com.product.model.vo.Product;
 
 public class ProductMenu {
 
@@ -22,7 +24,7 @@ public class ProductMenu {
 			System.out.println("3) 상품명(키워드)으로 검색 ");
 			System.out.println("4) 상품 정보 변경");
 			System.out.println("5) 상품 정보 삭제");
-			System.out.println("6) 쓱배송 가능상품 검색");
+			System.out.println("6) 쓱배송 가능상품 조회");
 			System.out.println("7) 가격대별 검색");
 			System.out.println("0) 프로그램 종료");
 
@@ -37,13 +39,13 @@ public class ProductMenu {
 				break;
 			case 2:pc.selectProduct();
 				break;
-			case 3:
+			case 3:pc.selectByPname(inputPname());
 				break;
-			case 4:
+			case 4:updateProduct();
 				break;
-			case 5:
+			case 5:pc.deleteProduct(inputPname());
 				break;
-			case 6:
+			case 6:pc.selectSsgProduct();
 				break;
 			case 7:
 				break;
@@ -57,6 +59,8 @@ public class ProductMenu {
 		}
 
 	}
+
+	
 
 	/**
 	 * 추가할 상품 정보를 입력받는 메소드
@@ -76,7 +80,7 @@ public class ProductMenu {
 		System.out.print("브랜드명 : ");
 		String brand = sc.nextLine();
 		
-		System.out.print("쓱배송 가능 여부(Y/N) : ");
+		System.out.print("쓱배송(Y/N) : ");
 		String ssgAble = sc.nextLine();
 		
 		System.out.print("상품분류 : ");
@@ -85,26 +89,57 @@ public class ProductMenu {
 		pc.inputProduct(pName, price, national, brand, ssgAble, category);
 	}
 	
+	/**
+	 * 상품명 입력받는 메소드
+	 * @return 입력받은 상품명
+	 */
+	private String inputPname() {
+		
+		System.out.print("\n 상품명 입력 : ");
+		return sc.nextLine();
+		
+	}
 	
-	
-	
+	private void updateProduct() {
+		
+		String pName = inputPname();
+		
+		System.out.print("변경할 가격 : ");
+		String price = sc.nextLine();
+		
+		System.out.print("변경할 쓱배송(Y/N) : ");
+		String ssgAble = sc.nextLine();
+		
+		pc.updateProduct(pName, price, ssgAble);
+		
+	}
 	
 	//------------------------ 출력화면 --------------------------
 	
 
 	/**
-	 * 상품추가에 성공했을때 출력하는 화면
-	 * @param message 	: 상품추가 성공 문구
+	 * 성공했을때 출력하는 화면
+	 * @param message 	: 성공 문구
 	 */
 	public void DisplaySuccess(String message) {
 		System.out.println(message);
 	}
 
 	/**
-	 * 상품추가에 실패했을때 출력하는 화면
-	 * @param message	: 상품추가 실패 문구
+	 * 실패했을때 출력하는 화면
+	 * @param message	: 실패 문구
 	 */
 	public void DisplayFail(String message) {
 		System.out.println(message);
+	}
+
+	/**
+	 * 출력하고자 하는 list가 여러행일때
+	 * @param list		: 여러행 list
+	 */
+	public void DisplayProductList(ArrayList<Product> list) {
+		for(Product p : list) {
+			System.out.println(p);
+		}
 	}
 }

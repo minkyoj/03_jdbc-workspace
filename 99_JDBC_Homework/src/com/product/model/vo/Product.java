@@ -113,8 +113,8 @@ public class Product {
 	
 	@Override
 	public String toString() {
-		return "Product [pNO=" + pNO + ", pName=" + pName + ", price=" + price + ", national=" + national + ", brand="
-				+ brand + ", ssgAble=" + ssgAble + ", category=" + category + ", regDate=" + regDate + "]";
+		return " [상품번호 : " + pNO + ", 상품명 : " + pName + ", 가격 : " + price + ", 원산지 : " + national + ", 제조회사 : "
+				+ brand + ", 쓱배송 : " + ssgAble + ", 상품분류 : " + category + ", 등록일 : " + regDate + "]";
 	}
 	
 	
