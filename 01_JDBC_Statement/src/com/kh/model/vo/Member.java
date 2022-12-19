@@ -55,19 +55,6 @@ public class Member {
 		this.hobby = hobby;
 	}
 
-	public Member(String userId, String userName, String gender, int age, String email, String phone,
-			String address, String hobby) {
-		super();
-		this.userId = userId;
-		this.userName = userName;
-		this.gender = gender;
-		this.age = age;
-		this.email = email;
-		this.phone = phone;
-		this.address = address;
-		this.hobby = hobby;
-	}
-
 	public Member(String userId) {
 		super();
 		this.userId = userId;

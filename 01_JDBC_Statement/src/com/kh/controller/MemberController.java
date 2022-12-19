@@ -75,59 +75,75 @@ public class MemberController {
 
 	}
 
-	public void searchMemberId(String userId) {
+	public void selectByUserId(String userId) {
 
-		ArrayList<Member> list = new MemberDao().idSelectList(userId);
-
-		if (list.isEmpty()) {
-			new MemberMenu().displayNoDataId("해당 아이디의 조회 결과가 없습니다.");
-		} else {
-			new MemberMenu().displayIdMemberList(list);
+		Member m = new MemberDao().selectByUserId(userId);
+		
+		if(m == null) { // 검색 결과가 없을 경우 (조회된 데이터 없음)
+			new MemberMenu().displayNoData(userId + "에 해당하는 검색결과가 없습니다.");
+		}else {
+			new MemberMenu().displayMember(m);
 		}
 
 	}
-
-	public void searchKeywordName(String userName) {
+	
+	/**
+	 * 사용자의 이름으로 키워드 검색 요청시 처리해주는 메소드
+	 * @param keyword
+	 */
+	public void selectByUserName(String keyword) {
 		
-		ArrayList<Member> list = new MemberDao().keywordNameSelectList(userName);
+		ArrayList<Member> list = new MemberDao().selectByUserName(keyword);
 
-		if (list.isEmpty()) {
-			new MemberMenu().displayNoDataKeywordName("해당 이름의 조회 결과가 없습니다.");
-		} else {
-			new MemberMenu().displayKeywordNameMemberList(list);
+		if (list.isEmpty()) { // 텅빈 리스트일 경우 => 검색결과 없음
+			new MemberMenu().displayNoData(keyword + "에 해당하는 검색결과가 없습니다.");
+		} else { // 그게 아닐 경우 => 검색결과 있음
+			new MemberMenu().displayMemberList(list);
 		}
 		
 	}
 
-	public void updateMember(String userId, String userName, String gender, String age, String email, String phone,
-			String address, String hobby) {
+	/**
+	 * 정보 변경 요청 처리해주는 메소드
+	 * @param userId	: 변경하고자 하는 회원 아이디
+	 * @param userPwd	: 변경할 비밀번호
+	 * @param email		: 변경할 이메일
+	 * @param phone		: 변경할 전화번호
+	 * @param address	: 변경할 주소
+	 */
+	public void updateMember(String userId, String userPwd, String email, String phone, String address) {
 		
-		Member m = new Member(userId, userName, gender, Integer.parseInt(age), email, phone, address, hobby);
+		Member m = new Member();
+		m.setUserId(userId);
+		m.setUserPwd(userPwd);
+		m.setEmail(email);
+		m.setPhone(phone);
+		m.setAddress(address);
 		
 		int result = new MemberDao().updateMember(m);
 		
 		if (result > 0) {
-			new MemberMenu().displayUpdateSuccess("성공적으로 수정되었습니다.");
+			new MemberMenu().displaySuccess("성공적으로 회원 정보가 변경 되었습니다.");
 		} else {
-			new MemberMenu().displayUpdateFail("회원 수정 실패했습니다.");
+			new MemberMenu().displayFail("회원정보 변경에 실패했습니다.");
 		}
 		
 	}
 
-	public void updateDelete(String userId) {
+	public void deleteMember(String userId) {
 		
-		Member m = new Member(userId);
-		
-		int result = new MemberDao().deleteMember(m);
+		int result = new MemberDao().deleteMember(userId);
 		
 		if (result > 0) {
-			new MemberMenu().displayUpdateSuccess("성공적으로 삭제되었습니다.");
+			new MemberMenu().displaySuccess("성공적으로 회원 정보가 삭제되었습니다.");
 		} else {
-			new MemberMenu().displayUpdateFail("회원 삭제 실패했습니다.");
+			new MemberMenu().displayFail("회원정보 삭제에 실패했습니다.");
 		}
 		
 		
 	}
+
+
 	
 
 }

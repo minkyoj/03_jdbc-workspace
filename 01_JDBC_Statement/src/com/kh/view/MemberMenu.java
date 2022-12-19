@@ -48,16 +48,22 @@ public class MemberMenu {
 				mc.selectList();
 				break; // 입력받을 거 없으면 바로 Controller 호출
 			case 3:
-				searchMemberId();
+				//String userId = inputMemberId();
+				//mc.selectByUserId(userId);
+				mc.selectByUserId(inputMemberId());
 				break;
 			case 4:
-				searchKeywordName();
+				//String keyword = inputMemberName();
+				//mc.selectByUserName(keyword);
+				mc.selectByUserName(inputMemberName());
 				break;
 			case 5:
 				updateMember();
 				break;
 			case 6:
-				deleteMember();
+				//String userId2 = inputMemberId();
+				//mc.deleteMember(userId2);
+				mc.deleteMember(inputMemberId());
 				break;
 			case 9:
 				searchMemberName();
@@ -78,7 +84,7 @@ public class MemberMenu {
 	public void inputMember() {
 		System.out.println("\n==== 회원추가 ====");
 		// 아이디 ~ 취미까지 입력 받기
-
+		
 		System.out.print("아이디 : ");
 		String userId = sc.nextLine();
 
@@ -122,67 +128,52 @@ public class MemberMenu {
 	}
 
 	/**
-	 * 아이디검색 화면(서브화면) -- case 3 찾고자하는 회원의 아이디를 입력 받는 창
+	 * 사용자에게 회원 아이디 입력 받은 후 그때 입력된 값을 반환시켜주는 메소드
+	 * @return 사용자가 입력한 값 
 	 */
-	private void searchMemberId() {
-		System.out.print("아이디 : ");
-		String userId = sc.nextLine();
-
-		mc.searchMemberId(userId);
+	public String inputMemberId() {
+		System.out.print("\n 회원 아이디 입력 : ");
+		return sc.nextLine();
 	}
 
 	/**
-	 * 이름검색 화면(서브화면) -- case 4 찾고자하는 회원의 이름을 입력 받는 창
+	 * 사용자에게 검색할 회원명(키워드) 입력 받은 후 그때 입력된 값을 반환시켜주는 메소드
+	 * @return 사용자가 입력한 회원명(키워드)
 	 */
-	private void searchKeywordName() {
-		System.out.print("이름 : ");
-		String userName = sc.nextLine();
-
-		mc.searchKeywordName(userName);
+	public String inputMemberName() {
+		System.out.print("\n 회원 이름(키워드) 입력 : ");
+		return sc.nextLine();
 	}
-
+	
+	
 	/**
-	 * 수정값 입력 화면(서브화면) -- case 5 수정할 회원의 정보를 입력 받는 창
+	 * 사용자에게 변경할 정보들 (비번, 이메일, 전번, 주소)과 해당 회원 아이디 입력받는 화면
 	 */
-	private void updateMember() {
-		System.out.print("변경할 아이디 : ");
+	public void updateMember() {
+		System.out.println("\n=== 회원정보 변경 ===");
+		
+		// 비번, 이메일, 전화번호, 주소, 변경할 아이디!!
+		/*
+		System.out.print("회원정보를 변경할 회원아이디 입력 : ");
 		String userId = sc.nextLine();
-
-		System.out.print("이름 수정 : ");
-		String userName = sc.nextLine();
-
-		System.out.print("성별 수정 : ");
-		String gender = sc.nextLine();
-
-		System.out.print("나이 수정 : ");
-		String age = sc.nextLine();
-
-		System.out.print("이메일 수정 : ");
+		*/
+		String userId = inputMemberId(); // 위의 두 줄을 다음과같이 줄일 수 있음!
+		
+		System.out.print("변경할 암호 : ");
+		String userPwd = sc.nextLine();
+		
+		System.out.print("변경할 이메일 : ");
 		String email = sc.nextLine();
 
-		System.out.print("휴대폰번호 수정 : ");
+		System.out.print("변경할 전번 : ");
 		String phone = sc.nextLine();
 
-		System.out.print("주소 수정 : ");
+		System.out.print("변경할 주소 : ");
 		String address = sc.nextLine();
-
-		System.out.print("취미 수정 : ");
-		String hobby = sc.nextLine();
-
-		mc.updateMember(userId, userName, gender, age, email, phone, address, hobby);
-	}
-	
-	
-	/**
-	 * 삭제할 아이디 검색 화면(서브화면) -- case 6 삭제할 회원의 아이디를 입력 받는 창
-	 */
-	private void deleteMember() {
-		System.out.print("삭제할 아이디 : ");
-		String userId = sc.nextLine();
 		
-		mc.updateDelete(userId);
+		mc.updateMember(userId, userPwd, email, phone, address);
 	}
-
+	
 	// ------------------------------------------ 응답 화면
 	// ----------------------------------------------
 
@@ -205,18 +196,18 @@ public class MemberMenu {
 	}
 
 	/**
-	 * 조회 서비스 요청시 조회결과가 없을 경우 사용자가 보게 될 응답화면 -- case 2
+	 * 조회 서비스 요청시 조회결과가 없을 경우 사용자가 보게 될 응답화면
 	 * 
 	 * @param message
 	 */
 	public void displayNoData(String message) {
 		System.out.println("\n" + message);
 	}
-
+	
 	/**
-	 * 조회 서비스 요청시 조회결과가 있는 경우 사용자가 보게 될 응답화면 -- case 2
+	 *  조회 서비스 요청시 조회결과가 여러행일 경우 사용자가 보게될 응답화면
 	 * 
-	 * @param message
+	 * @param list
 	 */
 	public void displayMemberList(ArrayList<Member> list) {
 		System.out.println("\n 조회된 데이터는 다음과 같습니다.");
@@ -252,24 +243,13 @@ public class MemberMenu {
 		ArrayList<Member> m = list;
 		System.out.println(m);
 	}
-
+	
 	/**
-	 * 아이디 검색 서비스 요청시 조회결과가 있을 경우 사용자가 보게 될 응답화면 -- case 3
-	 * 
-	 * @param string
+	 * 조회 서비스 요청시 조회결과가 한 행일 경우 사용자가 보게될 응답화면
+	 * @param m
 	 */
-	public void displayNoDataId(String message) {
-		System.out.println("\n" + message);
-	}
-
-	/**
-	 * 아이디 검색 서비스 요청시 조회결과가 있을 경우 사용자가 보게 될 응답화면 -- case 3
-	 * 
-	 * @param string
-	 */
-	public void displayIdMemberList(ArrayList<Member> list) {
+	public void displayMember(Member m) {
 		System.out.println("\n 조회된 데이터는 다음과 같습니다.");
-		ArrayList<Member> m = list;
 		System.out.println(m);
 	}
 
@@ -280,35 +260,6 @@ public class MemberMenu {
 	 */
 	public void displayNoDataKeywordName(String message) {
 		System.out.println("\n" + message);
-	}
-
-	/**
-	 * 아이디 검색 서비스 요청시 조회결과가 있을 경우 사용자가 보게 될 응답화면 -- case 4
-	 * 
-	 * @param string
-	 */
-	public void displayKeywordNameMemberList(ArrayList<Member> list) {
-		System.out.println("\n 조회된 데이터는 다음과 같습니다.");
-		ArrayList<Member> m = list;
-		System.out.println(m);
-	}
-
-	/**
-	 * 수정 서비스 요청시 조회결과가 있을 경우 사용자가 보게 될 응답화면 -- case 5
-	 * 
-	 * @param string
-	 */
-	public void displayUpdateSuccess(String message) {
-		System.out.println(message);
-	}
-
-	/**
-	 * 수정 서비스 요청시 조회결과가 있을 경우 사용자가 보게 될 응답화면 -- case 5
-	 * 
-	 * @param string
-	 */
-	public void displayUpdateFail(String message) {
-		System.out.println(message);
 	}
 
 }
