@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Product {
 	
 	// 필드부
-	private int pNO;
+	private int pNo;
 	private String pName;
 	private int price;
 	private String national;
@@ -18,10 +18,10 @@ public class Product {
 	
 	public Product() {}
 	
-	public Product(int pNO, String pName, int price, String national, String brand, String ssgAble, String category,
+	public Product(int pNo, String pName, int price, String national, String brand, String ssgAble, String category,
 			Date regDate) {
 		super();
-		this.pNO = pNO;
+		this.pNo = pNo;
 		this.pName = pName;
 		this.price = price;
 		this.national = national;
@@ -45,11 +45,11 @@ public class Product {
 
 
 	public int getpNO() {
-		return pNO;
+		return pNo;
 	}
 
 	public void setpNO(int pNO) {
-		this.pNO = pNO;
+		this.pNo = pNO;
 	}
 
 	public String getpName() {
@@ -113,9 +113,9 @@ public class Product {
 	
 	@Override
 	public String toString() {
-		return " [상품번호 : " + pNO + ", 상품명 : " + pName + ", 가격 : " + price + ", 원산지 : " + national + ", 제조회사 : "
+		return " [상품번호 : " + pNo + ", 상품명 : " + pName + ", 가격 : " + price + ", 원산지 : " + national + ", 제조회사 : "
 				+ brand + ", 쓱배송 : " + ssgAble + ", 상품분류 : " + category + ", 등록일 : " + regDate + "]";
 	}
 	
-	
+	// 형근쓰 다녀감 ㅎㅎ 언젠가 보겠지 ㅎㅎ
 }

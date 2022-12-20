@@ -13,6 +13,8 @@ import com.kh.view.MemberMenu;
  */
 
 public class MemberController {
+	
+	// private MemberMenu mm = new MemberMenu(); -- 스택오버플로우 에러
 
 	/**
 	 * 사용자의 회원 추가 요청을 처리해주는 메소드

@@ -47,20 +47,17 @@ public class ProductMenu {
 				break;
 			case 6:pc.selectSsgProduct();
 				break;
-			case 7:
+			case 7:selectPriceProduct();
 				break;
 			case 0:
 				System.out.println("프로그램을 종료합니다.");
 				flag = false;
 			} // -- while end
-			
-			
 
 		}
 
 	}
 
-	
 
 	/**
 	 * 추가할 상품 정보를 입력받는 메소드
@@ -77,7 +74,7 @@ public class ProductMenu {
 		System.out.print("원산지 : ");
 		String national = sc.nextLine();
 		
-		System.out.print("브랜드명 : ");
+		System.out.print("제조회사 : ");
 		String brand = sc.nextLine();
 		
 		System.out.print("쓱배송(Y/N) : ");
@@ -111,6 +108,18 @@ public class ProductMenu {
 		String ssgAble = sc.nextLine();
 		
 		pc.updateProduct(pName, price, ssgAble);
+		
+	}
+	
+	private void selectPriceProduct() {
+		
+		System.out.print("최소 검색 가격 : ");
+		String minPrice = sc.nextLine();
+		
+		System.out.print("최대 검색 가격 : ");
+		String maxPrice = sc.nextLine();
+		
+		pc.selectPriceProduct(minPrice, maxPrice);
 		
 	}
 	

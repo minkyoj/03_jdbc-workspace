@@ -66,7 +66,13 @@ public class ProductController {
 
 	public void updateProduct(String pName, String price, String ssgAble) {
 		
-		int result = new ProductDao().updateProduct(pName, Integer.parseInt(price), ssgAble);
+		Product p = new Product();
+		
+		p.setpName(pName);
+		p.setPrice(Integer.parseInt(price));
+		p.setSsgAble(ssgAble);
+		
+		int result = new ProductDao().updateProduct(p);
 		
 		if(result > 0) {
 			new ProductMenu().DisplaySuccess(pName+"의 상품 정보가 변경되었습니다.");
@@ -99,6 +105,18 @@ public class ProductController {
 			new ProductMenu().DisplayProductList(list);
 		}
 		
+	}
+
+	public void selectPriceProduct(String minPrice, String maxPrice) {
+
+		ArrayList<Product> list = new ProductDao().selectPriceProduct(Integer.parseInt(minPrice), Integer.parseInt(maxPrice));
+
+		if (list.isEmpty()) {
+			new ProductMenu().DisplayFail("조회에 실패하였습니다.");
+		} else {
+			new ProductMenu().DisplayProductList(list);
+		}
+
 	}
 
 }
