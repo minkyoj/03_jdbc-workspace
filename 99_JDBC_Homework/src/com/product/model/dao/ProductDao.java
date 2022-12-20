@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import com.product.model.vo.Product;
 import com.product.view.ProductMenu;
 
-public class ProductDao {
+public class ProductDao {//
 
 	public int inputProduct(Product p) {
 
