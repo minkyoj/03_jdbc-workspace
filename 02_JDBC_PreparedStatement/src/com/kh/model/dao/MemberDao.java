@@ -346,8 +346,9 @@ public class MemberDao {
 		
 	}
 
-	public Member loginMember(Member m) {
+	public String loginMember(String userId, String userPwd) {
 		
+		String login = null;
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -361,14 +362,14 @@ public class MemberDao {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, m.getUserId());
-			pstmt.setString(2, m.getUserPwd());
+			pstmt.setString(1, userId);
+			pstmt.setString(2, userPwd);
 			
 			rset = pstmt.executeQuery();
 			
 			while (rset.next()) {
 				
-				m = new Member (rset.getString("userId"));
+				login = rset.getString("userId");
 				
 			}
 			
@@ -378,7 +379,7 @@ public class MemberDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return m;
+		return login;
 	}
 
 

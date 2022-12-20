@@ -123,14 +123,10 @@ public class MemberController {
 
 	public void loginMember(String userId, String userPwd) {
 		
-		Member m = new Member();
 		
-		m.setUserId(userId);
-		m.setUserPwd(userPwd);
+		String login = new MemberDao().loginMember(userId, userPwd);
 		
-		m = new MemberDao().loginMember(m);
-		
-		if(m == null) {
+		if(login == null) {
 			new MemberMenu().displayFail("로그인실패");
 		}else {
 			new MemberMenu().displaySuccess("로그인성공");
