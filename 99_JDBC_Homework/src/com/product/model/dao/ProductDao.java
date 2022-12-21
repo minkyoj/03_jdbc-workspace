@@ -8,23 +8,21 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import static com.product.common.JDBCTemplate.*;
 import com.product.model.vo.Product;
 import com.product.view.ProductMenu;
 
 public class ProductDao {//
 
-	public int inputProduct(Product p) {
+	public int inputProduct(Connection conn, Product p) {
 
 		int result = 0;
-		Connection conn = null;
+		
 		PreparedStatement pstmt = null;
 
 		String sql = "INSERT INTO TB_PRODUCT VALUES(SEQ_PNO.NEXTVAL, ?, ?, ?, ?, ?, ?, SYSDATE)";
-
+		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
-			
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, p.getpName());
@@ -35,143 +33,99 @@ public class ProductDao {//
 			pstmt.setString(6, p.getCategory());
 			
 			result = pstmt.executeUpdate();
-
-			if (result > 0) {
-				conn.commit();
-			} else {
-				conn.rollback();
-			}
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				pstmt.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			close(pstmt);
 		}
-
+		
 		return result;
+		
+		
 	}
 
-	public ArrayList<Product> selectList() {
+	public ArrayList<Product> selectProduct(Connection conn) {
 		
 		ArrayList<Product> list = new ArrayList<>();
 		
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		String sql = "SELECT * FROM TB_PRODUCT";
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
-			
 			pstmt = conn.prepareStatement(sql);
-
 			rset = pstmt.executeQuery();
 			
-			while (rset.next()) {
-				
-				Product p = new Product();
-				
-				p.setpNO(rset.getInt("pNo"));
-				p.setpName(rset.getString("pName"));
-				p.setPrice(rset.getInt("price"));
-				p.setNational(rset.getString("national"));
-				p.setBrand(rset.getString("brand"));
-				p.setSsgAble(rset.getString("ssg_Able"));
-				p.setCategory(rset.getString("category"));
-				p.setRegDate(rset.getDate("reg_Date"));
-				
-				list.add(p);
+			while(rset.next()) {
+				list.add(new Product(rset.getInt("pno"),
+						 			rset.getString("pname"),
+						 			rset.getInt("price"),
+						 			rset.getString("national"),
+						 			rset.getString("brand"),
+						 			rset.getString("ssg_able"),
+						 			rset.getString("category"),
+						 			rset.getDate("reg_date")
+						));
 			}
 			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				rset.close();
-				pstmt.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			
+			close(rset);
+			close(pstmt);
 		}
 		return list;
 	}
 
-	public ArrayList<Product> selectByPname(String keyword) {
+	public ArrayList<Product> selectByPname(Connection conn, String pName) {
 		
-		ArrayList<Product> list = new ArrayList<>();
+		ArrayList<Product> list = new ArrayList<Product>();
 		
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		String sql = "SELECT * FROM TB_PRODUCT WHERE PNAME LIKE ?";
 		
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, "%"+keyword+"%");
+			pstmt.setString(1, "%"+pName+"%");
 			
 			rset = pstmt.executeQuery();
 			
-			while (rset.next()) {
-
-				Product p = new Product();
-
-				p.setpNO(rset.getInt("pNo"));
-				p.setpName(rset.getString("pName"));
-				p.setPrice(rset.getInt("price"));
-				p.setNational(rset.getString("national"));
-				p.setBrand(rset.getString("brand"));
-				p.setSsgAble(rset.getString("ssg_Able"));
-				p.setCategory(rset.getString("category"));
-				p.setRegDate(rset.getDate("reg_Date"));
-
-				list.add(p);
+			while(rset.next()) {
+				list.add(new Product(rset.getInt("pno"),
+			 			rset.getString("pname"),
+			 			rset.getInt("price"),
+			 			rset.getString("national"),
+			 			rset.getString("brand"),
+			 			rset.getString("ssg_able"),
+			 			rset.getString("category"),
+			 			rset.getDate("reg_date")
+						));
 			}
 			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try {
-				rset.close();
-				pstmt.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			close(rset);
+			close(pstmt);
 		}
+		
 		return list;
+		
 	}
 
-	public int updateProduct(Product p) {
+	public int updateProduct(Connection conn, Product p) {
 		
 		int result = 0;
-		
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-		String sql = "UPDATE TB_PRODUCT SET price = ?, ssg_Able = ? WHERE pNAME = ?";
+		String sql = "UPDATE TB_PRODUCT SET PRICE = ?, SSG_ABLE = ? WHERE PNAME = ?";
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setInt(1, p.getPrice());
@@ -180,47 +134,27 @@ public class ProductDao {//
 			
 			result = pstmt.executeUpdate();
 			
-			if (result > 0) {
-				conn.commit();
-			} else {
-				conn.rollback();
-			}
-			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
 
-	public int deleteProduct(String pName) {
+	public int deleteProduct(Connection conn, String pName) {
 		
 		int result = 0;
 		
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		String sql = "DELETE FROM TB_PRODUCT WHERE pName = ?";
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
-			
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, pName);
 			
 			result = pstmt.executeUpdate();
 			
-			if(result > 0) {
-				conn.commit();
-			}else {
-				conn.rollback();
-			}
-			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -228,41 +162,33 @@ public class ProductDao {//
 		return result;
 	}
 
-	public ArrayList<Product> selectSsgProduct() {
+	public ArrayList<Product> selectSsgProduct(Connection conn) {
 		
 		ArrayList<Product> list = new ArrayList<>();
 		
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
 		String sql = "SELECT * FROM TB_PRODUCT WHERE ssg_Able='Y'";
 		
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
 			pstmt = conn.prepareStatement(sql);
 			
 			rset = pstmt.executeQuery();
 			
 			while (rset.next()) {
 				
-				Product p = new Product();
-
-				p.setpNO(rset.getInt("pNo"));
-				p.setpName(rset.getString("pName"));
-				p.setPrice(rset.getInt("price"));
-				p.setNational(rset.getString("national"));
-				p.setBrand(rset.getString("brand"));
-				p.setSsgAble(rset.getString("ssg_Able"));
-				p.setCategory(rset.getString("category"));
-				p.setRegDate(rset.getDate("reg_Date"));
-
-				list.add(p);
+				list.add(new Product(rset.getInt("pno"),
+			 			rset.getString("pname"),
+			 			rset.getInt("price"),
+			 			rset.getString("national"),
+			 			rset.getString("brand"),
+			 			rset.getString("ssg_able"),
+			 			rset.getString("category"),
+			 			rset.getDate("reg_date")
+						));
 			}
 			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -270,19 +196,16 @@ public class ProductDao {//
 		return list;
 	}
 
-	public ArrayList<Product> selectPriceProduct(int minPrice, int maxPrice) {
+	public ArrayList<Product> selectPriceProduct(Connection conn, int minPrice, int maxPrice) {
 
 		ArrayList<Product> list = new ArrayList<>();
 
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
 		String sql = "SELECT * FROM TB_PRODUCT WHERE PRICE >= ? AND PRICE <= ?";
 
 		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "JDBC", "JDBC");
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setInt(1, minPrice);
@@ -292,22 +215,17 @@ public class ProductDao {//
 
 			while (rset.next()) {
 
-				Product p = new Product();
-
-				p.setpNO(rset.getInt("pNo"));
-				p.setpName(rset.getString("pName"));
-				p.setPrice(rset.getInt("price"));
-				p.setNational(rset.getString("national"));
-				p.setBrand(rset.getString("brand"));
-				p.setSsgAble(rset.getString("ssg_Able"));
-				p.setCategory(rset.getString("category"));
-				p.setRegDate(rset.getDate("reg_Date"));
-
-				list.add(p);
+				list.add(new Product(rset.getInt("pno"),
+			 			rset.getString("pname"),
+			 			rset.getInt("price"),
+			 			rset.getString("national"),
+			 			rset.getString("brand"),
+			 			rset.getString("ssg_able"),
+			 			rset.getString("category"),
+			 			rset.getDate("reg_date")
+						));
 			}
 
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
