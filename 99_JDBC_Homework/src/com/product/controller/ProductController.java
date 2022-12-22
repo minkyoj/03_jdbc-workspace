@@ -37,7 +37,7 @@ public class ProductController {
 	}
 
 	/**
-	 * 회원 전체를 조회해주는 메소드
+	 * 상품 전체를 조회해주는 메소드
 	 */
 	public void selectProduct() {
 		

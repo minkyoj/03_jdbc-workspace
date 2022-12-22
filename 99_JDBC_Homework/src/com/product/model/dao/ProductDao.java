@@ -1,5 +1,8 @@
 package com.product.model.dao;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,12 +10,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import static com.product.common.JDBCTemplate.*;
 import com.product.model.vo.Product;
 import com.product.view.ProductMenu;
 
 public class ProductDao {//
+	
+	private Properties prop = new Properties();
+	
+	public ProductDao() {
+		try {
+			prop.loadFromXML(new FileInputStream("resources/query.xml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public int inputProduct(Connection conn, Product p) {
 
@@ -20,7 +34,7 @@ public class ProductDao {//
 		
 		PreparedStatement pstmt = null;
 
-		String sql = "INSERT INTO TB_PRODUCT VALUES(SEQ_PNO.NEXTVAL, ?, ?, ?, ?, ?, ?, SYSDATE)";
+		String sql = prop.getProperty("inputProduct");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -52,7 +66,7 @@ public class ProductDao {//
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String sql = "SELECT * FROM TB_PRODUCT";
+		String sql = prop.getProperty("selectProduct");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -86,7 +100,7 @@ public class ProductDao {//
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String sql = "SELECT * FROM TB_PRODUCT WHERE PNAME LIKE ?";
+		String sql = prop.getProperty("selectByPname");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -146,7 +160,7 @@ public class ProductDao {//
 		
 		PreparedStatement pstmt = null;
 		
-		String sql = "DELETE FROM TB_PRODUCT WHERE pName = ?";
+		String sql = prop.getProperty("deleteProduct");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -203,7 +217,7 @@ public class ProductDao {//
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
-		String sql = "SELECT * FROM TB_PRODUCT WHERE PRICE >= ? AND PRICE <= ?";
+		String sql = prop.getProperty("selectPriceProduct");
 
 		try {
 			pstmt = conn.prepareStatement(sql);
