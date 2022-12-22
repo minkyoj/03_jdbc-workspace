@@ -16,13 +16,13 @@ public class ProductMenu {
 		
 		
 		while(flag) {
-			System.out.println("1. 전체 조회 하기");
+			System.out.println("\n1. 전체 조회 하기");
 			System.out.println("2. 상품 추가 하기");
 			System.out.println("3. 상품 수정 하기 (상품id로 조회하고 수정)");
 			System.out.println("4. 상품 삭제 하기 (상품id로 조회해서 삭제)");
 			System.out.println("5. 상품 검색 하기 (상품 이름으로 키워드 검색)");
 			System.out.println("0. 프로그램 종료하기");
-			System.out.print(">> 메뉴선택 :");
+			System.out.print(">> 메뉴선택 : ");
 			
 			int menu = sc.nextInt();
 			
@@ -39,10 +39,13 @@ public class ProductMenu {
 				updateProduct();
 				break;
 			case 4:
+				deleteProduct();
 				break;
 			case 5:
+				selectByPname();
 				break;
 			case 0:
+				System.out.println("프로그램을 종료합니다");
 				flag = false;
 			default:
 				break;
@@ -53,19 +56,25 @@ public class ProductMenu {
 		
 		
 	}
+	
+	private String inputProductId() {
+
+		System.out.print("\n상품아이디 입력 : ");
+		return sc.nextLine();
+
+	}
 
 
 	private void inputProduct() {
 		
-		System.out.print("상품아이디 : ");
-		String productId = sc.nextLine();
-		System.out.print("상품명 : ");
+		String productId = inputProductId();
+		System.out.print("상품명 입력 : ");
 		String pName = sc.nextLine();
-		System.out.print("상품가격 : ");
+		System.out.print("상품가격 입력 : ");
 		String price = sc.nextLine();
-		System.out.print("상품상세정보 : ");
+		System.out.print("상품상세정보 입력 : ");
 		String description = sc.nextLine();
-		System.out.print("재고 : ");
+		System.out.print("재고 입력 : ");
 		String stock = sc.nextLine();
 		
 		pc.inputProduct(productId, pName, Integer.parseInt(price), description, Integer.parseInt(stock));
@@ -74,8 +83,7 @@ public class ProductMenu {
 
 	private void updateProduct() {
 		
-		System.out.print("수정할 상품아이디 : ");
-		String productId = sc.nextLine();
+		String productId = inputProductId();
 		System.out.print("상품명 수정 값 : ");
 		String pName = sc.nextLine();
 		System.out.print("가격 수정 값 : ");
@@ -85,10 +93,25 @@ public class ProductMenu {
 		System.out.print("재고 수정 값 : ");
 		String stock = sc.nextLine();
 		
-		pc.updateProduct(productId, pName, price, description, stock);
+		pc.updateProduct(productId, pName, Integer.parseInt(price), description, Integer.parseInt(stock));
 		
 	}
 	
+	private void deleteProduct() {
+		
+		String productId = inputProductId();
+		
+		pc.deleteProduct(productId);
+		
+	}
+	
+	private void selectByPname() {
+		
+		System.out.print("상품명 입력 : ");
+		String pName = sc.nextLine();
+		
+		pc.selectByPname(pName);
+	}
 	
 	/**
 	 * 조회 실패 시에 호출되는 메소드
@@ -104,10 +127,10 @@ public class ProductMenu {
 	}
 
 	public void selectList(ArrayList<Product> list) {
+		System.out.println("\n조회 목록");
 		for (Product p : list) {
 			System.out.println(p);
 		}
 	}
-
 
 }

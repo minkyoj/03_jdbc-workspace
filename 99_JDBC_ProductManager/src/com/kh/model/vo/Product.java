@@ -67,8 +67,8 @@ public class Product {
 	//tostring
 	@Override
 	public String toString() {
-		return "Product [productId=" + productId + ", pName=" + pName + ", price=" + price + ", description="
-				+ description + ", stock=" + stock + "]";
+		return "[상품 아이디 : " + productId + ", 상품명 : " + pName + ", 가격 : " + price + ", 상품상세정보 : "
+				+ description + ", 재고 : " + stock + "]";
 	}
 	
 	

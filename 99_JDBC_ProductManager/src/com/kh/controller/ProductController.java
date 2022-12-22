@@ -13,7 +13,7 @@ public class ProductController {
 		ArrayList<Product> list = new ProductService().selectList();
 		
 		if(list.isEmpty()) {
-			new ProductMenu().displayFail("전체 조회 실패");
+			new ProductMenu().displayFail("전체 조회 실패\n");
 		}else {
 			new ProductMenu().selectList(list);
 		}
@@ -33,20 +33,54 @@ public class ProductController {
 		int result = new ProductService().inputProduct(p);
 		
 		if(result > 0) {
-			new ProductMenu().displaySuccess("상품 추가 성공");
+			new ProductMenu().displaySuccess(productId + " 상품 추가 성공\n");
 		}else {
-			new ProductMenu().displayFail("상품 추가 실패");
+			new ProductMenu().displayFail(productId + " 상품 추가 실패\n");
 		}
 		
 	}
 
-	public void updateProduct(String productId, String pName, String price, String description, String stock) {
+	public void updateProduct(String productId, String pName, int price, String description, int stock) {
 		
 		Product p = new Product();
 		
+		p.setProductId(productId);
+		p.setpName(pName);
+		p.setPrice(price);
+		p.setDescription(description);
+		p.setStock(stock);
 		
+		int result = new ProductService().updateProduct(p);
 		
+		if(result > 0) {
+			new ProductMenu().displaySuccess(productId + " 상품 수정 성공\n");
+		}else {
+			new ProductMenu().displayFail(productId + " 상품 수정 실패\n");
+		}
 		
+	}
+
+	public void deleteProduct(String productId) {
+
+		int result = new ProductService().deleteProduct(productId);
+
+		if (result > 0) {
+			new ProductMenu().displaySuccess(productId + " 상품 삭제 성공\n");
+		} else {
+			new ProductMenu().displayFail(productId + " 상품 삭제 실패\n");
+		}
+
+	}
+
+	public void selectByPname(String pName) {
+		
+		ArrayList<Product> list = new ProductService().selectByPname(pName);
+		
+		if(list.isEmpty()) {
+			new ProductMenu().displayFail(pName + "조회 실패\n");
+		}else {
+			new ProductMenu().selectList(list);
+		}
 		
 	}
 
